@@ -189,10 +189,15 @@ select A.supp_id, A.supp_name,
 CASE
     WHEN avg(A.rating) = 5 THEN 'Excellent'
     WHEN avg(A.rating) > 4 THEN 'Good Service'
-	WHEN avg(A.rating) > 2 THEN 'Average Service'
+    WHEN avg(A.rating) > 2 THEN 'Average Service'
     ELSE 'Poor Service'
 END AS Rating
-from (select r.rat_ratstars as rating, o.*, s.supp_id, s.supp_name from rating r, `order` o, supplier_pricing p, supplier s where r.ord_id = o.ord_id and o.pricing_id = p.pricing_id and p.supp_id = s.supp_id order by p.supp_id) as A group by A.supp_id order by s.supp_id LIMIT 0,100;
+from 
+    (select r.rat_ratstars as rating, o.*, s.supp_id, s.supp_name 
+    from rating r, `order` o, supplier_pricing p, supplier s 
+    where r.ord_id = o.ord_id and o.pricing_id = p.pricing_id and p.supp_id = s.supp_id 
+    order by p.supp_id) as A 
+    group by A.supp_id order by s.supp_id LIMIT 0,100;
 
 END 
 && DELIMITER ;
